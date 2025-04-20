@@ -1,4 +1,4 @@
-# Learning Next.js Blog
+# NextBlog
 
 This is a blog application built with Next.js 15 (App Router), demonstrating features like user authentication, database interaction with Prisma, and server actions.
 
@@ -10,7 +10,7 @@ This is a blog application built with Next.js 15 (App Router), demonstrating fea
 - **ORM:** [Prisma](https://www.prisma.io/)
 - **Database:** PostgreSQL (assumed, based on Prisma setup)
 - **Styling:** [Tailwind CSS](https://tailwindcss.com/)
-- **UI Components:** [Radix UI](https://www.radix-ui.com/) (via `shadcn/ui` likely, based on `components.json` and `Components/ui`)
+- **UI Components:** [Radix UI](https://www.radix-ui.com/) 
 - **Linting:** ESLint
 - **Package Manager:** pnpm
 
@@ -39,7 +39,7 @@ This is a blog application built with Next.js 15 (App Router), demonstrating fea
 ├── next.config.ts            # Next.js configuration
 ├── package.json              # Project dependencies and scripts
 ├── tsconfig.json             # TypeScript configuration
-└── README.md                 # This file
+└── README.md                 # Readme File
 ```
 
 ## Getting Started
@@ -55,15 +55,15 @@ This is a blog application built with Next.js 15 (App Router), demonstrating fea
 
 1.  **Clone the repository:**
     ```bash
-    git clone <repository-url>
-    cd learning-next
+    git clone https://github.com/ShauryaRahlon/NextBlog
+    cd NextBlog
     ```
 2.  **Install dependencies:**
     ```bash
     pnpm install
     ```
 3.  **Set up environment variables:**
-    Create a `.env.local` file in the root directory and add the following variables, replacing the placeholder values with your actual credentials:
+    Create a `.env` file in the root directory and add the following variables, replacing the placeholder values with your actual credentials:
 
     ```env
     # Prisma Database URL
@@ -82,7 +82,6 @@ This is a blog application built with Next.js 15 (App Router), demonstrating fea
     ```bash
     pnpm prisma migrate dev
     ```
-    (This will also generate the Prisma Client)
 
 ### Running the Development Server
 
