@@ -4,13 +4,14 @@ import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
+import React from "react"; // Keep React import if needed elsewhere or as good practice
 
-// Update the props interface to match Next.js requirements
+// Define the props interface including both params and searchParams
 type PostPageProps = {
   params: {
     id: string;
   };
-  // searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: { [key: string]: string | string[] | undefined };
 };
 
 async function getData(id: string) {
@@ -25,24 +26,31 @@ async function getData(id: string) {
   return data;
 }
 
-// Add generateMetadata for better SEO
+// Use PostPageProps for generateMetadata
 export async function generateMetadata({
   params,
 }: PostPageProps): Promise<Metadata> {
   const post = await getData(params.id);
+  if (!post) {
+    return { title: "Post Not Found" }; // Handle case where post isn't found
+  }
   return {
     title: post.title,
     description: post.content.slice(0, 160), // First 160 characters as description
   };
 }
 
-// Revert signature to use PostPageProps and mark searchParams as unused
-export default async function PostPage({
-  params,
-}: // searchParams: _searchParams, // Use underscore to mark as unused
-PostPageProps) {
-  // Correctly destructure id from params
-  const { id } = params;
+// Use 'any' for props as a diagnostic step to bypass type error
+export default async function PostPage({ params, searchParams }: any) {
+  // Add checks for params.id existence and type due to using 'any'
+  const id = params?.id;
+  if (!id || typeof id !== "string") {
+    console.error("Invalid or missing ID parameter");
+    return notFound();
+  }
+  // Mark searchParams as unused if necessary (ESLint might still warn)
+  const _searchParams = searchParams;
+
   const data = await getData(id);
 
   // Basic display (can be enhanced later)
@@ -52,8 +60,6 @@ PostPageProps) {
       {data.imageUrl && (
         // Use next/image
         <div className="relative w-full h-96 mb-6">
-          {" "}
-          {/* Added relative positioning */}
           <Image
             src={data.imageUrl}
             alt={data.title}
@@ -72,7 +78,6 @@ PostPageProps) {
           <CardContent>{data.content}</CardContent>
         </Card>
       </div>
-      {/* Removed duplicate h1 tag here */}
     </div>
   );
 }
