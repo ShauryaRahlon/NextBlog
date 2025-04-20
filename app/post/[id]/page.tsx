@@ -1,8 +1,16 @@
 import { prisma } from "@/app/utils/db";
 import { Card, CardContent } from "@/Components/ui/card";
 import Link from "next/link";
-import Image from "next/image"; // Import next/image
+import Image from "next/image";
 import { notFound } from "next/navigation";
+import { Metadata } from "next";
+
+// Add proper typing for params
+interface PostPageProps {
+  params: {
+    id: string;
+  };
+}
 
 async function getData(id: string) {
   const data = await prisma.blogPost.findUnique({
@@ -16,8 +24,19 @@ async function getData(id: string) {
   return data;
 }
 
+// Add generateMetadata for better SEO
+export async function generateMetadata({
+  params,
+}: PostPageProps): Promise<Metadata> {
+  const post = await getData(params.id);
+  return {
+    title: post.title,
+    description: post.content.slice(0, 160), // First 160 characters as description
+  };
+}
+
 // Remove custom type, define params directly in function signature
-export default async function IdPage({ params }: { params: { id: string } }) {
+export default async function PostPage({ params }: PostPageProps) {
   // Correctly destructure id from params
   const { id } = params;
   const data = await getData(id);
