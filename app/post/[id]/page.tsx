@@ -6,12 +6,12 @@ import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import React from "react"; // Keep React import if needed elsewhere or as good practice
 
-// Define the props interface including both params and searchParams
+// Adjust PostPageProps to match Next.js expectations
 type PostPageProps = {
-  params: {
+  params: Promise<{
     id: string;
-  };
-  searchParams?: { [key: string]: string | string[] | undefined }; // Optional if unused
+  }>;
+  searchParams?: { [key: string]: string | string[] | undefined };
 };
 
 async function getData(id: string) {
@@ -26,11 +26,11 @@ async function getData(id: string) {
   return data;
 }
 
-// Use PostPageProps for generateMetadata
 export async function generateMetadata({
   params,
 }: PostPageProps): Promise<Metadata> {
-  const post = await getData(params.id);
+  const resolvedParams = await params; // Resolve the promise
+  const post = await getData(resolvedParams.id);
   if (!post) {
     return { title: "Post Not Found" }; // Handle case where post isn't found
   }
@@ -41,7 +41,8 @@ export async function generateMetadata({
 }
 
 export default async function PostPage({ params }: PostPageProps) {
-  const { id } = params;
+  const resolvedParams = await params; // Resolve the promise
+  const { id } = resolvedParams;
   if (!id || typeof id !== "string") {
     console.error("Invalid or missing ID parameter");
     return notFound();
