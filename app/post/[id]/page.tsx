@@ -5,12 +5,13 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 
-// Add proper typing for params
-interface PostPageProps {
+// Update the props interface to match Next.js requirements
+type PostPageProps = {
   params: {
     id: string;
   };
-}
+  searchParams: { [key: string]: string | string[] | undefined };
+};
 
 async function getData(id: string) {
   const data = await prisma.blogPost.findUnique({
@@ -36,7 +37,10 @@ export async function generateMetadata({
 }
 
 // Remove custom type, define params directly in function signature
-export default async function PostPage({ params }: PostPageProps) {
+export default async function PostPage({
+  params,
+  searchParams, // Add searchParams parameter even if unused
+}: PostPageProps) {
   // Correctly destructure id from params
   const { id } = params;
   const data = await getData(id);
