@@ -39,7 +39,7 @@ export default async function DashboardPage() {
               <img
                 src={item.imageUrl}
                 alt={item.title}
-                className="mt-2 w-full h-auto rounded-md"
+                className="mt-2 w-full h-auto rounded-md hover:scale-105 transition-transform duration-300"
               />
             )}
             <p className="text-sm text-gray-500 mt-2">
