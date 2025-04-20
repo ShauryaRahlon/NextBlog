@@ -11,7 +11,7 @@ type PostPageProps = {
   params: Promise<{
     id: string;
   }>;
-  searchParams?: { [key: string]: string | string[] | undefined };
+  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
 async function getData(id: string) {
@@ -40,8 +40,12 @@ export async function generateMetadata({
   };
 }
 
-export default async function PostPage({ params }: PostPageProps) {
+export default async function PostPage({
+  params,
+  searchParams,
+}: PostPageProps) {
   const resolvedParams = await params; // Resolve the promise
+  const resolvedSearchParams = searchParams ? await searchParams : undefined; // Resolve searchParams if present
   const { id } = resolvedParams;
   if (!id || typeof id !== "string") {
     console.error("Invalid or missing ID parameter");
