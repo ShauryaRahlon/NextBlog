@@ -10,7 +10,7 @@ type PostPageProps = {
   params: {
     id: string;
   };
-  searchParams: { [key: string]: string | string[] | undefined };
+  // searchParams: { [key: string]: string | string[] | undefined };
 };
 
 async function getData(id: string) {
@@ -39,8 +39,8 @@ export async function generateMetadata({
 // Revert signature to use PostPageProps and mark searchParams as unused
 export default async function PostPage({
   params,
-  searchParams: _searchParams, // Use underscore to mark as unused
-}: PostPageProps) {
+}: // searchParams: _searchParams, // Use underscore to mark as unused
+PostPageProps) {
   // Correctly destructure id from params
   const { id } = params;
   const data = await getData(id);
