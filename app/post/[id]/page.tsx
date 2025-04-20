@@ -11,7 +11,7 @@ type PostPageProps = {
   params: {
     id: string;
   };
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams?: { [key: string]: string | string[] | undefined }; // Optional if unused
 };
 
 async function getData(id: string) {
@@ -40,31 +40,25 @@ export async function generateMetadata({
   };
 }
 
-// Use 'any' for props as a diagnostic step to bypass type error
-export default async function PostPage({ params, searchParams }: any) {
-  // Add checks for params.id existence and type due to using 'any'
-  const id = params?.id;
+export default async function PostPage({ params }: PostPageProps) {
+  const { id } = params;
   if (!id || typeof id !== "string") {
     console.error("Invalid or missing ID parameter");
     return notFound();
   }
-  // Mark searchParams as unused if necessary (ESLint might still warn)
-  const _searchParams = searchParams;
 
   const data = await getData(id);
 
-  // Basic display (can be enhanced later)
   return (
     <div className="max-w-3xl mx-auto py-8 px-4">
       <Link href={"/dashboard"}>Back</Link>
       {data.imageUrl && (
-        // Use next/image
         <div className="relative w-full h-96 mb-6">
           <Image
             src={data.imageUrl}
             alt={data.title}
-            fill={true} // Use fill
-            className="object-cover rounded-lg" // Keep object-cover
+            fill={true}
+            className="object-cover rounded-lg"
           />
         </div>
       )}
@@ -72,7 +66,6 @@ export default async function PostPage({ params, searchParams }: any) {
       <p className="text-gray-500 mb-4">
         By {data.authorName} on {new Date(data.createdAt).toLocaleDateString()}
       </p>
-      {/* Render content inside the prose div */}
       <div className="prose prose-lg dark:prose-invert mt-4">
         <Card>
           <CardContent>{data.content}</CardContent>
