@@ -45,7 +45,9 @@ export default async function IdPage({ params }: { params: { id: string } }) {
       </p>
       {/* Render content inside the prose div */}
       <div className="prose prose-lg dark:prose-invert mt-4">
-        {data.content}
+        <Card>
+          <CardContent>{data.content}</CardContent>
+        </Card>
       </div>
       {/* Removed duplicate h1 tag here */}
     </div>
