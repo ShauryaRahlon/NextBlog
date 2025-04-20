@@ -45,7 +45,7 @@ export default async function PostPage({
   searchParams,
 }: PostPageProps) {
   const resolvedParams = await params; // Resolve the promise
-  const resolvedSearchParams = searchParams ? await searchParams : undefined; // Resolve searchParams if present
+  // const resolvedSearchParams = searchParams ? await searchParams : undefined; // Resolve searchParams if present
   const { id } = resolvedParams;
   if (!id || typeof id !== "string") {
     console.error("Invalid or missing ID parameter");
