@@ -1,5 +1,5 @@
 import { handleSubmission } from "@/app/actions";
-import { Button } from "@/Components/ui/button";
+import { SubmitButton } from "@/Components/general/Submitbuttion";
 import {
   Card,
   CardContent,
@@ -11,7 +11,13 @@ import { Input } from "@/Components/ui/input";
 import { Label } from "@/Components/ui/label";
 import { Textarea } from "@/Components/ui/textarea";
 
-export default function createBlogRoute() {
+// Helper function for delay
+// const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+export default async function createBlogRoute() {
+  // Add a 3-second delay for testing loading state
+  // await sleep(3000);
+
   return (
     <div>
       <Card className="max-w-lg mx-auto">
@@ -37,7 +43,8 @@ export default function createBlogRoute() {
               <Label className="mt-2">Image URL</Label>
               <Input name="url" placeholder="Image URL" />
             </div>
-            <Button className="mt-2">Create Post</Button>
+            <SubmitButton />
+            {/* <Button className="mt-2">Create Post</Button> */}
           </form>
         </CardContent>
       </Card>

@@ -8,8 +8,7 @@ export async function handleSubmission(formData: FormData) {
   const user = await getUser();
 
   if (!user || !user.id) {
-    throw new Error("User not authenticated or missing ID");
-    // Or redirect('/api/auth/login') depending on desired behavior
+    return redirect("/api/auth/register"); // Redirect to login if user is not authenticated
   }
 
   const title = formData.get("title");
@@ -26,7 +25,7 @@ export async function handleSubmission(formData: FormData) {
     throw new Error("Title and Content are required and must be strings.");
   }
 
-  const data = await prisma.blogPost.create({
+  await prisma.blogPost.create({
     data: {
       title: title,
       imageUrl: typeof url === "string" ? url : "", // Provide empty string if null
