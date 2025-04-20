@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { prisma } from "./utils/db";
 import Link from "next/link";
+import Image from "next/image"; // Import next/image
 import { Progress } from "@/Components/ui/progress"; // Correct import path
 // import { Prisma } from "@prisma/client";
 async function getData() {
@@ -47,28 +48,33 @@ async function BlogPosts() {
           {" "}
           {/* Wrap with Link */}
           <div
-            className="border rounded-md shadow-sm hover:shadow-lg transition-shadow duration-300 overflow-hidden h-full" // Added h-full for consistent height within Link
+            className="border rounded-md shadow-sm hover:shadow-lg transition-shadow duration-300 overflow-hidden h-full flex flex-col" // Added flex flex-col
           >
-            {/* Image first */}
+            {/* Image first using next/image */}
             {item.imageUrl && (
-              <img
-                src={item.imageUrl}
-                alt={item.title}
-                className="w-full h-48 object-cover hover:scale-105 transition-transform duration-300" // Removed mt-2, kept fixed height/width/cover
-              />
+              <div className="relative w-full h-48 flex-shrink-0">
+                {" "}
+                {/* Added relative positioning and fixed height */}
+                <Image
+                  src={item.imageUrl}
+                  alt={item.title}
+                  fill={true} // Use fill to cover the container
+                  className="object-cover hover:scale-105 transition-transform duration-300" // Keep object-cover
+                />
+              </div>
             )}
             {/* Text content with padding */}
-            <div className="p-4">
-              <h3 className="text-lg font-semibold mb-1">{item.title}</h3>{" "}
-              {/* Added margin-bottom */}
+            <div className="p-4 flex-grow">
+              {" "}
+              {/* Added flex-grow */}
+              <h3 className="text-lg font-semibold mb-1">{item.title}</h3>
               <p className="text-gray-600 mb-2">
+                {/* Match content truncation from dashboard */}
                 {item.content.length > 34
                   ? item.content.substring(0, 34) + "..."
                   : item.content}
-              </p>{" "}
-              {/* Added margin-bottom */}
+              </p>
               <p className="text-sm text-gray-500">
-                {" "}
                 By {item.authorName} on{" "}
                 {new Date(item.createdAt).toLocaleDateString()}
               </p>

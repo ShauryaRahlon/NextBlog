@@ -4,12 +4,13 @@ const nextConfig: NextConfig = {
   /* config options here */
   images:{
     remotePatterns: [
+      // Allow any HTTPS hostname
       {
         protocol: "https",
-        hostname: "images.unsplash.com",
+        hostname: "**", // Use wildcard for hostname
         port: "",
         pathname: "/**",
-      }
+      },
   ]}
 };
 

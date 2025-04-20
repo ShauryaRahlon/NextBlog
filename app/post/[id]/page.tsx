@@ -1,6 +1,7 @@
 import { prisma } from "@/app/utils/db";
 import { Card, CardContent } from "@/Components/ui/card";
 import Link from "next/link";
+import Image from "next/image"; // Import next/image
 import { notFound } from "next/navigation";
 
 async function getData(id: string) {
@@ -15,14 +16,8 @@ async function getData(id: string) {
   return data;
 }
 
-// Correct type for params
-type IdPageProps = {
-  params: {
-    id: string;
-  };
-};
-
-export default async function IdPage({ params }: IdPageProps) {
+// Remove custom type, define params directly in function signature
+export default async function IdPage({ params }: { params: { id: string } }) {
   // Correctly destructure id from params
   const { id } = params;
   const data = await getData(id);
@@ -32,25 +27,26 @@ export default async function IdPage({ params }: IdPageProps) {
     <div className="max-w-3xl mx-auto py-8 px-4">
       <Link href={"/dashboard"}>Back</Link>
       {data.imageUrl && (
-        <img
-          src={data.imageUrl}
-          alt={data.title}
-          className="w-full h-96 object-cover rounded-lg mb-6" // Added image display
-        />
+        // Use next/image
+        <div className="relative w-full h-96 mb-6">
+          {" "}
+          {/* Added relative positioning */}
+          <Image
+            src={data.imageUrl}
+            alt={data.title}
+            fill={true} // Use fill
+            className="object-cover rounded-lg" // Keep object-cover
+          />
+        </div>
       )}
       <h1 className="text-4xl font-bold mb-4">{data.title}</h1>
       <p className="text-gray-500 mb-4">
         By {data.authorName} on {new Date(data.createdAt).toLocaleDateString()}
       </p>
-      <div className="prose prose-lg dark:prose-invert">
-        {" "}
-        {/* Basic content styling */}
+      {/* Render content inside the prose div */}
+      <div className="prose prose-lg dark:prose-invert mt-4">
+        {data.content}
       </div>
-      <Card>
-        <CardContent>
-          <p>{data.content}</p>
-        </CardContent>
-      </Card>
       {/* Removed duplicate h1 tag here */}
     </div>
   );

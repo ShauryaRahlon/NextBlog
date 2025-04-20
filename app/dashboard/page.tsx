@@ -1,5 +1,6 @@
 import { buttonVariants } from "@/Components/ui/button";
 import Link from "next/link";
+import Image from "next/image"; // Import next/image
 import { prisma } from "../utils/db";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
@@ -34,24 +35,36 @@ export default async function DashboardPage() {
         {data.map((item) => (
           // Wrap with Link and apply matching styles from home page
           <Link href={`/post/${item.id}`} key={item.id} className="block">
-            <div className="border rounded-md shadow-sm hover:shadow-lg transition-shadow duration-300 overflow-hidden h-full">
-              {/* Image first with fixed height/cover */}
+            <div className="border rounded-md shadow-sm hover:shadow-lg transition-shadow duration-300 overflow-hidden h-full flex flex-col">
+              {" "}
+              {/* Added flex flex-col */}
+              {/* Image first using next/image */}
               {item.imageUrl && (
-                <img
-                  src={item.imageUrl}
-                  alt={item.title}
-                  className="w-full h-48 object-cover hover:scale-105 transition-transform duration-300"
-                />
+                <div className="relative w-full h-48 flex-shrink-0">
+                  {" "}
+                  {/* Added relative positioning and fixed height */}
+                  <Image
+                    src={item.imageUrl}
+                    alt={item.title}
+                    fill={true} // Use fill to cover the container
+                    className="object-cover hover:scale-105 transition-transform duration-300" // Keep object-cover
+                  />
+                </div>
               )}
               {/* Text content with padding and matching margins */}
-              <div className="p-4">
+              {/* Corrected structure: removed nested div and stray </p> */}
+              <div className="p-4 flex-grow">
+                {" "}
+                {/* Keep flex-grow if needed for flex layout */}
                 <h3 className="text-lg font-semibold mb-1">{item.title}</h3>
                 <p className="text-gray-600 mb-2">
                   {item.content.length > 34
                     ? item.content.substring(0, 34) + "..."
                     : item.content}
-                </p>{" "}
-                <p className="text text-gray-500">
+                </p>
+                <p className="text-sm text-gray-500">
+                  {" "}
+                  {/* Fixed class typo text -> text-sm */}
                   By {item.authorName} on{" "}
                   {new Date(item.createdAt).toLocaleDateString()}
                 </p>
