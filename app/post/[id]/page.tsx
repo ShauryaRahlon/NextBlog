@@ -36,11 +36,8 @@ export async function generateMetadata({
   };
 }
 
-// Remove custom type, define params directly in function signature
-export default async function PostPage({
-  params,
-  searchParams, // Add searchParams parameter even if unused
-}: PostPageProps) {
+// Update component signature to only accept params, as searchParams is unused
+export default async function PostPage({ params }: { params: { id: string } }) {
   // Correctly destructure id from params
   const { id } = params;
   const data = await getData(id);
