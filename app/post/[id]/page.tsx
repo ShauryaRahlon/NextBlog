@@ -20,10 +20,7 @@ async function getData(id: string) {
       id: id,
     },
   });
-  if (!data) {
-    return notFound();
-  }
-  return data;
+  return data || null; // Return null if no data is found
 }
 
 export async function generateMetadata({
@@ -50,6 +47,10 @@ export default async function PostPage({ params }: PostPageProps) {
   }
 
   const data = await getData(id);
+
+  if (!data) {
+    return notFound(); // Explicitly handle the case where no data is found
+  }
 
   return (
     <div className="max-w-3xl mx-auto py-8 px-4">
