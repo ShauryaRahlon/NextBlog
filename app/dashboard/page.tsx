@@ -19,6 +19,7 @@ async function getData(userId: string) {
 export default async function DashboardPage() {
   const { getUser } = getKindeServerSession();
   const user = await getUser();
+  if (!user) return null; // Handle the missing data, show a message, or return notFound()
   const data = await getData(user.id);
   return (
     <div>
