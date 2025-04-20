@@ -36,8 +36,11 @@ export async function generateMetadata({
   };
 }
 
-// Update component signature to only accept params, as searchParams is unused
-export default async function PostPage({ params }: { params: { id: string } }) {
+// Revert signature to use PostPageProps and mark searchParams as unused
+export default async function PostPage({
+  params,
+  searchParams: _searchParams, // Use underscore to mark as unused
+}: PostPageProps) {
   // Correctly destructure id from params
   const { id } = params;
   const data = await getData(id);
